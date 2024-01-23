@@ -16,9 +16,8 @@
 
 import sys
 
-PY3 = sys.version_info[0] == 3
 
-if PY3:
+if PY3 := sys.version_info[0] == 3:
     import codecs
     import _thread as thread
     from io import BytesIO as StringIO

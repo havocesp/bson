@@ -26,13 +26,11 @@ def recvobj(self):
 
         If the return value is None, it means the socket is closed by the other side.
     """
-    sock_buf = self.recvbytes(4)
-    if sock_buf is None:
+    if (sock_buf := self.recvbytes(4)) is None:
         return None
 
     message_length = _bintoint(sock_buf.getvalue())
-    sock_buf = self.recvbytes(message_length - 4, sock_buf)
-    if sock_buf is None:
+    if (sock_buf := self.recvbytes(message_length - 4, sock_buf)) is None:
         return None
 
     retval = loads(sock_buf.getvalue())
