@@ -1,32 +1,32 @@
 import os
 from binascii import hexlify
-from random import randint
 from unittest import TestCase
 
 from six import text_type, PY3
 from six.moves import xrange
 
 from bson import dumps, loads
+import secrets
 
 
 def populate(parent, howmany, max_children):
     if howmany > max_children:
-        children = randint(2, max_children)
+        children = secrets.SystemRandom().randint(2, max_children)
         distribution = []
         for _ in xrange(0, children - 1):
             distribution.append(int(howmany / children))
         distribution.append(howmany - sum(distribution, 0))
         for i in xrange(0, children):
-            steal_target = randint(0, children - 1)
+            steal_target = secrets.SystemRandom().randint(0, children - 1)
             while steal_target == i:
-                steal_target = randint(0, children -1)
-            steal_count = int(randint(-1 * distribution[i],
+                steal_target = secrets.SystemRandom().randint(0, children -1)
+            steal_count = int(secrets.SystemRandom().randint(-1 * distribution[i],
                     distribution[steal_target]) / 2)
             distribution[i] += steal_count
             distribution[steal_target] -= steal_count
 
         for i in xrange(0, children):
-            make_dict = randint(0, 1)
+            make_dict = secrets.SystemRandom().randint(0, 1)
             if make_dict:
                 baby = {}
             else:
@@ -48,7 +48,7 @@ def populate_with_leaves(parent, howmany):
         leaf = os.urandom(4)
         leaf = "".join(chr(c) for c in hexlify(leaf)) \
             if PY3 else leaf.encode("hex")
-        make_unicode = randint(0, 1)
+        make_unicode = secrets.SystemRandom().randint(0, 1)
         if make_unicode:
             leaf = text_type(leaf)
         if isinstance(parent, dict):
