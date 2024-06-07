@@ -176,7 +176,7 @@ def encode_string_element(name, value):
 def _is_string(value):
     if isinstance(value, text_type):
         return True
-    elif isinstance(value, str) or isinstance(value, bytes):
+    elif isinstance(value, (str, bytes)):
         try:
             unicode(value, errors='strict')
             return True
@@ -208,7 +208,7 @@ def encode_value(name, value, buf, traversal_stack,
         buf.write(encode_double_element(name, value))
     elif _is_string(value):
         buf.write(encode_string_element(name, value))
-    elif isinstance(value, str) or isinstance(value, bytes):
+    elif isinstance(value, (str, bytes)):
         buf.write(encode_binary_element(name, value))
     elif isinstance(value, UUID):
         buf.write(encode_binary_element(name, value.bytes, binary_subtype=4))
@@ -219,7 +219,7 @@ def encode_value(name, value, buf, traversal_stack,
     elif isinstance(value, dict):
         buf.write(encode_document_element(name, value, traversal_stack,
                                           generator_func, on_unknown))
-    elif isinstance(value, list) or isinstance(value, tuple):
+    elif isinstance(value, (list, tuple)):
         buf.write(encode_array_element(name, value, traversal_stack,
                                        generator_func, on_unknown))
     elif isinstance(value, BSONCoding):
