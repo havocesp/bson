@@ -21,7 +21,6 @@ import binascii
 import calendar
 import datetime
 import os
-import random
 import socket
 import struct
 import threading
@@ -29,6 +28,7 @@ import time
 
 from bson.py3compat import PY3, bytes_from_hex, string_type, text_type
 from bson.tz_util import utc
+import secrets
 
 
 # fnv_1a_24 adaptation taken from MongoDB Python Driver at https://github.com/mongodb/mongo-python-driver/commit/61850357a0e0eeec1a30e1adc0bbf7ebee807358
@@ -73,7 +73,7 @@ class ObjectId(object):
     """A MongoDB ObjectId.
     """
 
-    _inc = random.randint(0, 0xFFFFFF)
+    _inc = secrets.SystemRandom().randint(0, 0xFFFFFF)
     _inc_lock = threading.Lock()
 
     _machine_bytes = _machine_bytes()
